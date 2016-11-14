@@ -47,6 +47,32 @@ namespace CppLinq
 
 		return stream;
 	}
+	
+	// Linq Object
+	template<typename Enum>
+	class LinqObject
+	{
+
+	};
+
+	// From
+	template <typename Type, typename Iter>
+	LinqObject<Enumerator<Type, Iter>> from(Iter begin, Iter end)
+	{
+		return Enumerator<Type, Iter>([=](Iter& iter)
+		{
+			return (iter == end) ? throw EnumeratorEndException() : *(iter++);
+		}, begin);
+	}
+
+	template <typename Type, typename Iter>
+	LinqObject<Enumerator<Type, std::pair<Iter, int>>> from(Iter begin, int length)
+	{
+		return Enumerator<Type, std::pair<Iter, int>>([=](std::pair<Iter, int>& pair)
+		{
+			return (pair.second++ == length) ? throw EnumeratorEndException() : *(pair.first++);
+		}, std::make_pair(begin, 0));
+	}
 }
 
 #endif
