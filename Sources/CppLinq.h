@@ -54,9 +54,15 @@ namespace CppLinq
 	{
 		using Type = typename Enum::value_type;
 
-	public:
-		Enum m_enumerator;
+		template <typename Func, typename Arg>
+		static auto GetReturnType(Func* func = nullptr, Arg* arg1 = nullptr)
+			-> decltype((*func)(*arg1));
 
+		template <typename Func, typename Arg1, typename Arg2>
+		static auto GetReturnType(Func* func = nullptr, Arg1* arg1 = nullptr, Arg2* arg2 = nullptr)
+			-> decltype((*func)(*arg1, *arg2));
+
+		// Select Internal
 		template <typename Ret>
 		LinqObject<Enumerator<Ret, std::pair<Enum, int>>> SelectInternal(std::function<Ret(Type, int)> transform) const
 		{
@@ -66,15 +72,27 @@ namespace CppLinq
 			}, std::make_pair(m_enumerator, 0));
 		}
 
-	private:
+		template <typename Func>
+		LinqObject<Enumerator<decltype(GetReturnType<Func, Type, int>()), std::pair<Enum, int>>> SelectInternal(Func transform) const
+		{
+			return SelectInternal<decltype(GetReturnType<Func, Type, int>())>(transform);
+		}
 
-		template <typename Func, typename Arg>
-		static auto GetReturnType(Func* func = nullptr, Arg* arg1 = nullptr)
-			-> decltype((*func)(*arg1));
+	public:
+		Enum m_enumerator;
 
-		template <typename Func, typename Arg1, typename Arg2>
-		static auto GetReturnType(Func* func = nullptr, Arg1* arg1 = nullptr, Arg2* arg2 = nullptr)
-			-> decltype((*func)(*arg1, *arg2));
+		// Select
+		template <typename Ret>
+		LinqObject<Enumerator<Ret, std::pair<Enum, int>>> Select(std::function<Ret(Type)> transform) const
+		{
+			return SelectInternal<Ret>([=](Type a, int) { return transform(a); });
+		}
+
+		template <typename Func>
+		LinqObject<Enumerator<decltype(GetReturnType<Func, Type>()), std::pair<Enum, int>>> Select(Func transform) const
+		{
+			return Select<decltype(GetReturnType<Func, Type>())>(transform);
+		}
 	};
 
 	// From
