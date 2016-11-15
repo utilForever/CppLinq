@@ -14,6 +14,8 @@ namespace CppLinq
 	class Enumerator
 	{
 	public:
+		using value_type = Ret;
+
 		Enumerator(std::function<Ret(Arg&)> nextObject, Arg data) :
 			m_nextObject(nextObject), m_data(data)
 		{
@@ -96,6 +98,18 @@ namespace CppLinq
 
 	public:
 		Enum m_enumerator;
+
+		using value_type = typename Enum::value_type;
+
+		LinqObject(Enum enumerator) : m_enumerator(enumerator)
+		{
+
+		}
+
+		Type NextObject()
+		{
+			return _enumerator.nextObject();
+		}
 
 		// Select
 		template <typename Ret>
