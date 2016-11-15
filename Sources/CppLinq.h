@@ -78,6 +78,22 @@ namespace CppLinq
 			return SelectInternal<decltype(GetReturnType<Func, Type, int>())>(transform);
 		}
 
+		// Where Internal
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> WhereInternal(std::function<bool(Type, int)> predicate) const
+		{
+			return Enumerator<Type, std::pair<Enum, int>>([=](std::pair<Enum, int>& pair) -> Type
+			{
+				Type object;
+
+				do
+				{
+					object = pair.first.NextObject();
+				} while (!predicate(object, pair.second++));
+
+				return object;
+			}, std::make_pair(m_enumerator, 0));
+		}
+
 	public:
 		Enum m_enumerator;
 
@@ -92,6 +108,12 @@ namespace CppLinq
 		LinqObject<Enumerator<decltype(GetReturnType<Func, Type>()), std::pair<Enum, int>>> Select(Func transform) const
 		{
 			return Select<decltype(GetReturnType<Func, Type>())>(transform);
+		}
+
+		// Where
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> Where(std::function<bool(Type)> predicate) const
+		{
+			return WhereInternal([=](Type a, int) { return predicate(a); });
 		}
 	};
 
