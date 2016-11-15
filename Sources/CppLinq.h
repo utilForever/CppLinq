@@ -52,12 +52,34 @@ namespace CppLinq
 	template<typename Enum>
 	class LinqObject
 	{
+		using Type = typename Enum::value_type;
 
+	public:
+		Enum m_enumerator;
+
+		template <typename Ret>
+		LinqObject<Enumerator<Ret, std::pair<Enum, int>>> SelectInternal(std::function<Ret(Type, int)> transform) const
+		{
+			return Enumerator<Ret, std::pair<Enum, int>>([=](std::pair<Enum, int>& pair) -> Ret
+			{
+				return transform(pair.first.NextObject(), pair.second++);
+			}, std::make_pair(m_enumerator, 0));
+		}
+
+	private:
+
+		template <typename Func, typename Arg>
+		static auto GetReturnType(Func* func = nullptr, Arg* arg1 = nullptr)
+			-> decltype((*func)(*arg1));
+
+		template <typename Func, typename Arg1, typename Arg2>
+		static auto GetReturnType(Func* func = nullptr, Arg1* arg1 = nullptr, Arg2* arg2 = nullptr)
+			-> decltype((*func)(*arg1, *arg2));
 	};
 
 	// From
 	template <typename Type, typename Iter>
-	LinqObject<Enumerator<Type, Iter>> from(Iter begin, Iter end)
+	LinqObject<Enumerator<Type, Iter>> From(Iter begin, Iter end)
 	{
 		return Enumerator<Type, Iter>([=](Iter& iter)
 		{
@@ -66,12 +88,26 @@ namespace CppLinq
 	}
 
 	template <typename Type, typename Iter>
-	LinqObject<Enumerator<Type, std::pair<Iter, int>>> from(Iter begin, int length)
+	LinqObject<Enumerator<Type, std::pair<Iter, int>>> From(Iter begin, int length)
 	{
 		return Enumerator<Type, std::pair<Iter, int>>([=](std::pair<Iter, int>& pair)
 		{
 			return (pair.second++ == length) ? throw EnumeratorEndException() : *(pair.first++);
 		}, std::make_pair(begin, 0));
+	}
+
+	template <typename Type, int N>
+	auto From(Type (&array)[N])
+		-> decltype(From<Type>(array, array + N))
+	{
+		return From<Type>(array, array + N);
+	}
+
+	template<template<class> class Container, class Type>
+	auto From(const Container<Type>& container)
+		-> decltype(From<Type>(std::begin(container), std::end(container)))
+	{
+		return From<Type>(std::begin(container), std::end(container));
 	}
 }
 
