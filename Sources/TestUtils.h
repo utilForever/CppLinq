@@ -4,10 +4,12 @@
 #include "CppLinq.h"
 
 template<typename R, typename T, unsigned N, typename F>
-void IsEqualArray(R dst, T(&ans)[N], F f)
+void IsEqualArray(R dst, T(&ans)[N], F func)
 {
-	for (unsigned i = 0; i < N; i++)
-		EXPECT_EQ(f(ans[i]), f(dst.NextObject()));
+	for (size_t i = 0; i < N; ++i)
+	{
+		EXPECT_EQ(func(ans[i]), func(dst.NextObject()));
+	}
 
 	EXPECT_THROW(dst.NextObject(), CppLinq::EnumeratorEndException);
 }
@@ -15,8 +17,10 @@ void IsEqualArray(R dst, T(&ans)[N], F f)
 template<typename R, typename T, unsigned N>
 void IsEqualArray(R dst, T(&ans)[N])
 {
-	for (unsigned i = 0; i < N; i++)
+	for (size_t i = 0; i < N; ++i)
+	{
 		EXPECT_EQ(ans[i], dst.NextObject());
+	}
 
 	EXPECT_THROW(dst.NextObject(), CppLinq::EnumeratorEndException);
 }
