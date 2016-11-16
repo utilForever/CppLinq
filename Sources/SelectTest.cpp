@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "CppLinq.h"
+#include "TestUtils.h"
 
 TEST(Select, Multiply2)
 {
@@ -9,4 +10,6 @@ TEST(Select, Multiply2)
 
 	auto rng = CppLinq::From(src);
 	auto dst = rng.Select([](int a) { return a * 2; });
+
+	IsEqualArray(dst, ans);
 }
