@@ -25,6 +25,7 @@
   <ItemGroup>
     <ClCompile Include="..\Sources\main.cpp" />
     <ClCompile Include="..\Sources\SelectTest.cpp" />
+    <ClCompile Include="..\Sources\WhereTest.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{376E23EE-4DBC-4BC1-81BC-5DA3E55AA6E1}</ProjectGuid>
