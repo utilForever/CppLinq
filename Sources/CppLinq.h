@@ -108,7 +108,7 @@ namespace CppLinq
 
 		Type NextObject()
 		{
-			return _enumerator.nextObject();
+			return m_enumerator.NextObject();
 		}
 
 		// Select
