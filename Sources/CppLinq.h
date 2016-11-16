@@ -49,6 +49,32 @@ namespace CppLinq
 
 		return stream;
 	}
+
+	// Iterator and Container Pair
+	template <typename Iter, typename Container>
+	class IteratorContainerPair
+	{
+		std::function<Iter(const Container&)> m_getIter;
+
+	public:
+		Container m_second;
+		Iter m_first;
+
+		IteratorContainerPair(const Container& container, std::function<Iter(const Container&)> getIter) :
+			m_getIter(getIter), m_second(container), m_first(m_getIter(m_second))
+		{
+			
+		}
+
+		IteratorContainerPair(const IteratorContainerPair<Iter, Container>& pair) :
+			m_getIter(pair.m_getIter), m_second(pair.m_second), m_first(m_getIter(m_second))
+		{
+			for (auto iter = pair.m_getIter(pair.m_second); iter != pair.m_first; ++iter)
+			{
+				++m_first;
+			}
+		}
+	};
 	
 	// Linq Object
 	template<typename Enum>
