@@ -122,6 +122,25 @@ namespace CppLinq
 			}, std::make_pair(m_enumerator, 0));
 		}
 
+	protected:
+		template <typename Type, typename Ret>
+		class TransformComparer
+		{
+		public:
+			std::function<Ret(Type)> m_func;
+
+			TransformComparer(std::function<Ret(Type)> func) :
+				m_func(func)
+			{
+				
+			}
+
+			bool operator()(const Type& a, const Type& b) const
+			{
+				return m_func(a) < m_func(b);
+			}
+		};
+
 	public:
 		Enum m_enumerator;
 
@@ -155,6 +174,10 @@ namespace CppLinq
 		{
 			return WhereInternal([=](Type a, int) { return predicate(a); });
 		}
+
+		// OrderBy
+		/*template <typename Ret>
+		LinqObject<Enumerator<Type, IteratorContainerPair<typename std::multiset<Type, tr*/
 	};
 
 	// From
