@@ -42,7 +42,7 @@ namespace CppLinq
 				stream << enumerator.NextObject() << ' ';
 			}
 		}
-		catch (EnumeratorEndException& e)
+		catch (EnumeratorEndException&)
 		{
 			
 		}
@@ -176,8 +176,47 @@ namespace CppLinq
 		}
 
 		// OrderBy
-		/*template <typename Ret>
-		LinqObject<Enumerator<Type, IteratorContainerPair<typename std::multiset<Type, tr*/
+		template <typename Ret>
+		LinqObject<Enumerator<Type, IteratorContainerPair<typename std::multiset<Type, TransformComparer<Type, Ret>>::iterator,
+			std::multiset<Type, TransformComparer<Type, Ret>>>>> OrderBy(std::function<Ret(Type)> transform) const
+		{
+			using DataType = IteratorContainerPair<typename std::multiset<Type, TransformComparer<Type, Ret>>::iterator,
+				std::multiset<Type, TransformComparer<Type, Ret>>>;
+
+			std::multiset<Type, TransformComparer<Type, Ret>> objects(transform);
+
+			try
+			{
+				auto en = m_enumerator;
+				while (true)
+				{
+					objects.insert(en.NextObject());
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+				
+			}
+
+			return Enumerator<Type, DataType>([](DataType& pair)
+			{
+				return (pair.m_first == pair.m_second.end()) ?
+					throw EnumeratorEndException() : *(pair.m_first++);
+			}, DataType(objects, [](const std::multiset<Type, TransformComparer<Type, Ret>>& mulSet) { return mulSet.begin(); }));
+		}
+
+		template <typename Func>
+		LinqObject<Enumerator<Type, IteratorContainerPair<typename std::multiset<Type, TransformComparer<Type, decltype(GetReturnType<Func, Type>())>>::iterator,
+			std::multiset<Type, TransformComparer<Type, decltype(GetReturnType<Func, Type>())>>>>> OrderBy(Func transform) const
+		{
+			return OrderBy<decltype(GetReturnType<Func, Type>())>(transform);
+		}
+
+		LinqObject<Enumerator<Type, IteratorContainerPair<typename std::multiset<Type, TransformComparer<Type, Type>>::iterator,
+			std::multiset<Type, TransformComparer<Type, Type>>>>> OrderBy() const
+		{
+			return OrderBy<Type>([](Type a) { return a; });
+		}
 	};
 
 	// From
@@ -206,11 +245,43 @@ namespace CppLinq
 		return From<Type>(array, array + N);
 	}
 
-	template<template<class> class Container, class Type>
+	template <template <class> class Container, class Type>
 	auto From(const Container<Type>& container)
 		-> decltype(From<Type>(std::begin(container), std::end(container)))
 	{
 		return From<Type>(std::begin(container), std::end(container));
+	}
+
+	// For std::list, std::vector, std::dequeue
+	template<template<class, class> class V, typename T, typename U>
+	auto From(const V<T, U>& container)
+		-> decltype(From<T>(std::begin(container), std::end(container)))
+	{
+		return From<T>(std::begin(container), std::end(container));
+	}
+
+	// For std::set
+	template <template <class, class, class> class V, typename T, typename S, typename U>
+	auto From(const V<T, S, U>& container)
+		-> decltype(From<T>(std::begin(container), std::end(container)))
+	{
+		return From<T>(std::begin(container), std::end(container));
+	}
+
+	// For std::map
+	template <template <class, class, class, class> class V, typename K, typename T, typename S, typename U>
+	auto From(const V<K, T, S, U>& container)
+		-> decltype(From<std::pair<K, T>>(std::begin(container), std::end(container)))
+	{
+		return From<std::pair<K, T>>(std::begin(container), std::end(container));
+	}
+
+	// For std::array
+	template <template <class, size_t> class V, typename T, size_t L>
+	auto From(const V<T, L>& container)
+		-> decltype(From<T>(std::begin(container), std::end(container)))
+	{
+		return From<T>(std::begin(container), std::end(container));
 	}
 }
 
