@@ -122,6 +122,25 @@ namespace CppLinq
 			}, std::make_pair(m_enumerator, 0));
 		}
 
+		// Foreach Internal
+		void ForeachInternal(std::function<void(Type, int)> action) const
+		{
+			auto en = m_enumerator;
+			int index = 0;
+
+			try
+			{
+				while (true)
+				{
+					action(en.NextObject(), index++);
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+				
+			}
+		}
+
 	protected:
 		template <typename Type, typename Ret>
 		class TransformComparer
@@ -216,6 +235,12 @@ namespace CppLinq
 			std::multiset<Type, TransformComparer<Type, Type>>>>> OrderBy() const
 		{
 			return OrderBy<Type>([](Type a) { return a; });
+		}
+
+		// Foreach
+		void Foreach(std::function<void(Type)> action) const
+		{
+			ForeachInternal([=](Type a, int) { return action(a); });
 		}
 	};
 
