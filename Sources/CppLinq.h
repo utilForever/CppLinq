@@ -278,6 +278,12 @@ namespace CppLinq
 		{
 			return TakeWhileInternal([=](Type t, int) { return predicate(t); });
 		}
+
+		// Skip
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> Skip(int count) const
+		{
+			return WhereInternal([=](Type, int i) { return i >= count; });
+		}
 	};
 
 	// From
