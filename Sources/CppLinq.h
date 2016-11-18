@@ -242,6 +242,20 @@ namespace CppLinq
 		{
 			ForeachInternal([=](Type a, int) { return action(a); });
 		}
+
+		// Take
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> Take(int count) const
+		{
+			return WhereInternal([=](Type, int i)
+			{
+				if (i == count)
+				{
+					throw EnumeratorEndException();
+				}
+
+				return true;
+			});
+		}
 	};
 
 	// From
