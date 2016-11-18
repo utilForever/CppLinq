@@ -141,6 +141,22 @@ namespace CppLinq
 			}
 		}
 
+		// TakeWhile Internal
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> TakeWhileInternal(std::function<bool(Type, int)> predicate) const
+		{
+			return Enumerator<Type, std::pair<Enum, int>>([=](std::pair<Enum, int>& pair) -> Type
+			{
+				Type object = pair.m_first.NextObject();
+
+				if (!predicate(object, pair.m_second++))
+				{
+					throw EnumeratorEndException();
+				}
+
+				return object;
+			}, std::make_pair(m_enumerator, 0));
+		}
+
 	protected:
 		template <typename Type, typename Ret>
 		class TransformComparer
@@ -255,6 +271,12 @@ namespace CppLinq
 
 				return true;
 			});
+		}
+
+		// TakeWhile
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> TakeWhile(std::function<bool(Type)> predicate) const
+		{
+			return TakeWhileInternal([=](Type t, int) { return predicate(t); });
 		}
 	};
 
