@@ -1,6 +1,7 @@
 #ifndef CPP_LINQ_H
 #define CPP_LINQ_H
 
+#include <set>
 #include <iostream>
 #include <functional>
 
@@ -317,6 +318,39 @@ namespace CppLinq
 		LinqObject<Enumerator<Ret, std::pair<Enum, int>>> Cast() const
 		{
 			return SelectInternal<Ret>([=](Type a) { return a; });
+		}
+
+		// Distinct
+		template <typename Ret>
+		LinqObject<Enumerator<Type, std::pair<Enum, std::set<Ret>>>> Distinct(std::function<Ret(Type)> transform) const
+		{
+			using DataType = std::pair<Enum, std::set<Ret>>;
+
+			return Enumerator<Type, DataType>([=](DataType& pair) -> Type
+			{
+				while (true)
+				{
+					Type object = pair.m_first.NextObject();
+					Ret key = transform(object);
+
+					if (pair.m_second.find(key) == pair.m_second.end())
+					{
+						pair.m_second.insert(key);
+						return object;
+					}
+				}
+			}, std::make_pair(m_enumerator, std::set<Ret>()));
+		}
+
+		template <typename Func>
+		LinqObject<Enumerator<Type, std::pair<Enum, std::set<decltype(GetReturnType<Func, Type>())>>>> Distinct(Func transform) const
+		{
+			return Distinct<decltype(GetReturnType<Func, Type>())>(transform);
+		}
+
+		LinqObject<Enumerator<Type, std::pair<Enum, std::set<Type>>>> Distinct() const
+		{
+			return Distinct<Type>([](Type a) { return a; });
 		}
 	};
 
