@@ -2,6 +2,8 @@
 #define CPP_LINQ_H
 
 #include <set>
+#include <list>
+#include <deque>
 #include <vector>
 #include <iostream>
 #include <functional>
@@ -395,6 +397,30 @@ namespace CppLinq
 			return ExportToContainer<std::vector<Type>>([](std::vector<Type>& container, const Type& value)
 			{
 				container.emplace_back(value);
+			});
+		}
+
+		std::list<Type> ToList() const
+		{
+			return ExportToContainer<std::list<Type>>([](std::list<Type>& container, const Type& value)
+			{
+				container.emplace_back(value);
+			});
+		}
+
+		std::deque<Type> ToDeque() const
+		{
+			return ExportToContainer<std::deque<Type>>([](std::deque<Type>& container, const Type& value)
+			{
+				container.emplace_back(value);
+			});
+		}
+
+		std::set<Type> ToSet() const
+		{
+			return ExportToContainer<std::set<Type>>([](std::set<Type>& container, const Type& value)
+			{
+				container.insert(value);
 			});
 		}
 	};
