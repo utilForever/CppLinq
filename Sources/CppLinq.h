@@ -489,6 +489,16 @@ namespace CppLinq
 	{
 		return From<T>(std::begin(container), std::end(container));
 	}
+
+	// Repeat
+	template <typename Type>
+	LinqObject<Enumerator<Type, int>> Repeat(Type value, int count)
+	{
+		return Enumerator<Type, int>([=](int& index)
+		{
+			return (index++ >= count) ? throw EnumeratorEndException() : value;
+		}, 0);
+	}
 }
 
 #endif
