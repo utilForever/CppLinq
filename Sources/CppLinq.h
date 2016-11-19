@@ -2,6 +2,7 @@
 #define CPP_LINQ_H
 
 #include <set>
+#include <vector>
 #include <iostream>
 #include <functional>
 
@@ -351,6 +352,18 @@ namespace CppLinq
 		LinqObject<Enumerator<Type, std::pair<Enum, std::set<Type>>>> Distinct() const
 		{
 			return Distinct<Type>([](Type a) { return a; });
+		}
+		
+		// Reverse
+		LinqObject<Enumerator<Type, IteratorContainerPair<typename std::vector<Type>::const_reverse_iterator, std::vector<Type>>>> Reverse() const
+		{
+			using DataType = IteratorContainerPair<typename std::vector<Type>::const_reverse_iterator, std::vector<Type>>;
+
+			return Enumerator<Type, DataType>([](DataType& pair)
+			{
+				return (pair.m_first == pair.m_second.crend()) ?
+					throw EnumeratorEndException() : *(pair.m_first++);
+			}, DataType(ToVector(), [](const std::vector<Type>& vec) {return vec.crbegin(); }));
 		}
 	};
 
