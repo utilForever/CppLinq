@@ -311,6 +311,13 @@ namespace CppLinq
 		{
 			return SkipWhileInternal([=](Type t) { return predicate(t); });
 		}
+
+		// Cast
+		template <typename Ret>
+		LinqObject<Enumerator<Ret, std::pair<Enum, int>>> Cast() const
+		{
+			return SelectInternal<Ret>([=](Type a) { return a; });
+		}
 	};
 
 	// From
