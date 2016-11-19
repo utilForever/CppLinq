@@ -157,6 +157,27 @@ namespace CppLinq
 			}, std::make_pair(m_enumerator, 0));
 		}
 
+		// SkipWhile Internal
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> SkipWhileInternal(std::function<bool(Type, int)> predicate) const
+		{
+			return Enumerator<Type, std::pair<Enum, int>>([=](std::pair<Enum, int>& pair) -> Type
+			{
+				if (pair.m_second != 0)
+				{
+					return pair.m_first.NextObject();
+				}
+
+				Type object;
+
+				do
+				{
+					object = pair.m_first.NextObject();
+				} while (predicate(object, pair.m_second++));
+
+				return object;
+			}, std::make_pair(m_enumerator, 0));
+		}
+
 	protected:
 		template <typename Type, typename Ret>
 		class TransformComparer
@@ -283,6 +304,12 @@ namespace CppLinq
 		LinqObject<Enumerator<Type, std::pair<Enum, int>>> Skip(int count) const
 		{
 			return WhereInternal([=](Type, int i) { return i >= count; });
+		}
+
+		// SkipWhile
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> SkipWhile(std::function<bool(Type)> predicate) const
+		{
+			return SkipWhileInternal([=](Type t) { return predicate(t); });
 		}
 	};
 
