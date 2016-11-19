@@ -180,6 +180,29 @@ namespace CppLinq
 			}, std::make_pair(m_enumerator, 0));
 		}
 
+		// Export to container
+		template <typename Container, typename Func>
+		Container ExportToContainer(Func func) const
+		{
+			Container container;
+
+			try
+			{
+				auto en = m_enumerator;
+
+				while (true)
+				{
+					func(container, en.NextObject());
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+				
+			}
+
+			return container;
+		}
+
 	protected:
 		template <typename Type, typename Ret>
 		class TransformComparer
@@ -364,6 +387,15 @@ namespace CppLinq
 				return (pair.m_first == pair.m_second.crend()) ?
 					throw EnumeratorEndException() : *(pair.m_first++);
 			}, DataType(ToVector(), [](const std::vector<Type>& vec) {return vec.crbegin(); }));
+		}
+
+		// Export methods
+		std::vector<Type> ToVector() const
+		{
+			return ExportToContainer<std::vector<Type>>([](std::vector<Type>& container, const Type& value)
+			{
+				container.emplace_back(value);
+			});
 		}
 	};
 
