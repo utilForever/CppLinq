@@ -516,6 +516,16 @@ namespace CppLinq
 			return Any([](Type a) { return static_cast<bool>(a); });
 		}
 
+		bool All(std::function<bool(Type)> predicate) const
+		{
+			return !Any([=](Type a) { return !predicate(a); });
+		}
+
+		bool All() const
+		{
+			return All([](Type a) { return static_cast<bool>(a); });
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
