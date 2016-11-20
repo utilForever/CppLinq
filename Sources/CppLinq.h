@@ -203,6 +203,27 @@ namespace CppLinq
 			return start;
 		}
 
+		// Elect
+		Type Elect(std::function<Type(Type, Type)> accumulate) const
+		{
+			auto en = m_enumerator;
+			Type result = en.NextObject();
+
+			try
+			{
+				while (true)
+				{
+					result = accumulate(result, en.NextObject());
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+
+			}
+
+			return result;
+		}
+
 		// Export to container
 		template <typename Container, typename Func>
 		Container ExportToContainer(Func func) const
