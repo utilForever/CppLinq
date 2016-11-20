@@ -182,6 +182,27 @@ namespace CppLinq
 			}, std::make_pair(m_enumerator, 0));
 		}
 
+		// Aggregate
+		template <typename Ret>
+		Ret Aggregate(Ret start, std::function<Ret(Ret, Type)> accumulate) const
+		{
+			try
+			{
+				auto en = m_enumerator;
+				
+				while (true)
+				{
+					start = accumulate(start, en.NextObject());
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+				
+			}
+
+			return start;
+		}
+
 		// Export to container
 		template <typename Container, typename Func>
 		Container ExportToContainer(Func func) const
@@ -526,4 +547,3 @@ namespace CppLinq
 }
 
 #endif
-
