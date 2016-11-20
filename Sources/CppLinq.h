@@ -499,6 +499,31 @@ namespace CppLinq
 			return (index++ >= count) ? throw EnumeratorEndException() : value;
 		}, 0);
 	}
+
+	// Range
+	template <typename Type>
+	LinqObject<Enumerator<Type, std::pair<bool, Type>>> Range(Type begin, Type end, Type step)
+	{
+		return Enumerator<Type, std::pair<bool, Type>>([=](std::pair<bool, Type>& pair)
+		{
+			if (!(pair.m_second < end))
+			{
+				throw EnumeratorEndException();
+			}
+
+			if (!pair.m_first)
+			{
+				pair.m_frist = true;
+			}
+			else
+			{
+				pair.m_second += step;
+			}
+
+			return pair.m_second;
+		}, std::make_pair(false, begin));
+	}
 }
 
 #endif
+
