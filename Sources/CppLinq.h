@@ -412,6 +412,33 @@ namespace CppLinq
 			}, DataType(ToVector(), [](const std::vector<Type>& vec) {return vec.crbegin(); }));
 		}
 
+		// Sum
+		template <typename Ret>
+		Ret Sum(std::function<Ret(Type)> transform) const
+		{
+			return Aggregate<Ret>(Ret(), [=](Ret accumulator, Type object)
+			{
+				return accumulator + transform(object);
+			});
+		}
+
+		template <typename Func>
+		decltype(GetReturnType<Func, Type>()) Sum(Func transform) const
+		{
+			return Sum<decltype(GetReturnType<Func, Type>())>(transform);
+		}
+
+		template <typename Ret>
+		Ret Sum() const
+		{
+			return Sum<Ret>([](Type a) { return a; });
+		}
+
+		Type Sum() const
+		{
+			return Sum<Type>();
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
