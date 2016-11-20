@@ -469,6 +469,25 @@ namespace CppLinq
 			return Average<Type>();
 		}
 
+		// Count
+		int Count(std::function<bool(Type)> predicate) const
+		{
+			return Aggregate<int>(0, [=](int count, Type a)
+			{
+				return count + (predicate(a) ? 1 : 0);
+			});
+		}
+
+		int Count(const Type& value) const
+		{
+			return Count([=](Type a) { return a == value; });
+		}
+
+		int Count() const
+		{
+			return Count([]() { return true; });
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
