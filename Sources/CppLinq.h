@@ -439,6 +439,36 @@ namespace CppLinq
 			return Sum<Type>();
 		}
 
+		// Average
+		template <typename Ret>
+		Ret Average(std::function<Ret(Type)> transform) const
+		{
+			int count = 0;
+
+			return Aggregate<Ret>(Ret(), [&](Ret accumulator, Type object) -> Ret
+			{
+				count++;
+				return (accumulator * (count - 1) + transform(object)) / count;
+			});
+		}
+
+		template <typename Func>
+		decltype(GetReturnType<Func, Type>()) Average(Func transform) const
+		{
+			return Average<decltype(GetReturnType<Func, Type>())>(transform);
+		}
+
+		template <typename Ret>
+		Ret Average() const
+		{
+			return Average<Ret>([](Type a) { return a; });
+		}
+
+		Type Average() const
+		{
+			return Average<Type>();
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
