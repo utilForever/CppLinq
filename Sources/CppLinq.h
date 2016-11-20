@@ -526,6 +526,11 @@ namespace CppLinq
 			return All([](Type a) { return static_cast<bool>(a); });
 		}
 
+		bool Contains(const Type& value) const
+		{
+			return Any([&](Type a) { return value == a; });
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
