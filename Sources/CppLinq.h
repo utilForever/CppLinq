@@ -488,6 +488,34 @@ namespace CppLinq
 			return Count([]() { return true; });
 		}
 
+		// Any
+		bool Any(std::function<bool(Type)> predicate) const
+		{
+			try
+			{
+				auto en = m_enumerator;
+
+				while (true)
+				{
+					if (predicate(en.NextObject()))
+					{
+						return true;
+					}
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+				
+			}
+
+			return false;
+		}
+
+		bool Any() const
+		{
+			return Any([](Type a) { return static_cast<bool>(a); });
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
