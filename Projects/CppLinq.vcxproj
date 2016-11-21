@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Sources\AllTest.cpp" />
+    <ClCompile Include="..\Sources\AnyTest.cpp" />
     <ClCompile Include="..\Sources\main.cpp" />
     <ClCompile Include="..\Sources\OrderByTest.cpp" />
     <ClCompile Include="..\Sources\SelectTest.cpp" />

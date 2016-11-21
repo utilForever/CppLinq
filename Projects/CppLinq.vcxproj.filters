@@ -22,6 +22,9 @@
     <ClCompile Include="..\Sources\AllTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\Sources\AnyTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CppLinq">
