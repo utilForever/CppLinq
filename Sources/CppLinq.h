@@ -638,6 +638,7 @@ namespace CppLinq
 			}
 		}
 
+		// Last
 		Type Last(std::function<bool(Type)> predicate) const
 		{
 			auto clause = Where(predicate);
@@ -676,6 +677,31 @@ namespace CppLinq
 		Type LastOrDefault() const
 		{
 			return LastOrDefault([]() { return true; });
+		}
+
+		// Concat
+		template <typename Enum2>
+		LinqObject<Enumerator<Type, std::pair<bool, std::pair<Enum, Enum2>>>> Concat(LinqObject<Enum2> rhs) const
+		{
+			using DataType = std::pair<bool, std::pair<Enum, Enum2>>;
+
+			return Enumerator<Type, DataType>([=](DataType& pair) -> Type
+			{
+				if (pair.m_first)
+				{
+					return pair.m_second.m_first.NextObject();
+				}
+
+				try
+				{
+					return pair.m_second.m_first.NextObject();
+				}
+				catch (EnumeratorEndException&)
+				{
+					pair.m_first = true;
+					return pair.m_second.m_second.NextObject();
+				}
+			}, std::make_pair(false, std::make_pair(m_enumerator, rhs.m_enumerator)));
 		}
 
 		// Export methods
