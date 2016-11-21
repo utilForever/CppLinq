@@ -603,6 +603,41 @@ namespace CppLinq
 			return en.NextObject();
 		}
 
+		// First
+		Type First(std::function<bool(Type)> predicate) const
+		{
+			return Where(predicate).m_enumerator.NextObject();
+		}
+
+		Type First() const
+		{
+			return First([]() { return true; });
+		}
+
+		Type FirstOrDefault(std::function<bool(Type)> predicate)
+		{
+			try
+			{
+				return First(predicate);
+			}
+			catch (EnumeratorEndException&)
+			{
+				return Type();
+			}
+		}
+
+		Type FirstOrDefault() const
+		{
+			try
+			{
+				return First();
+			}
+			catch(EnumeratorEndException&)
+			{
+				return Type();
+			}
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
