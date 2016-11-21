@@ -590,6 +590,19 @@ namespace CppLinq
 			return Min<Type>([](Type a) { return a; });
 		}
 
+		// ElementAt
+		Type ElementAt(size_t index) const
+		{
+			auto en = m_enumerator;
+
+			for (size_t i = 0; i < index; ++i)
+			{
+				en.NextObject();
+			}
+
+			return en.NextObject();
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
