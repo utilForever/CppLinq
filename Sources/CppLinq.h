@@ -537,6 +537,7 @@ namespace CppLinq
 			return Any([](Type a) { return static_cast<bool>(a); });
 		}
 
+		// All
 		bool All(std::function<bool(Type)> predicate) const
 		{
 			return !Any([=](Type a) { return !predicate(a); });
@@ -547,6 +548,7 @@ namespace CppLinq
 			return All([](Type a) { return static_cast<bool>(a); });
 		}
 
+		// Contains
 		bool Contains(const Type& value) const
 		{
 			return Any([&](Type a) { return value == a; });
