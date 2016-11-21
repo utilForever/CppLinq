@@ -638,6 +638,46 @@ namespace CppLinq
 			}
 		}
 
+		Type Last(std::function<bool(Type)> predicate) const
+		{
+			auto clause = Where(predicate);
+			Type object = clause.m_enumerator.NextObject();
+
+			try
+			{
+				while (true)
+				{
+					object = clause.m_enumerator.NextObject();
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+				return object;
+			}
+		}
+
+		Type Last() const
+		{
+			return Last([]() { return true; });
+		}
+
+		Type LastOrDefault(std::function<bool(Type)> predicate) const
+		{
+			try
+			{
+				return Last(predicate);
+			}
+			catch (EnumeratorEndException&)
+			{
+				return Type();
+			}
+		}
+
+		Type LastOrDefault() const
+		{
+			return LastOrDefault([]() { return true; });
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
