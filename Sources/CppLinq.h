@@ -554,6 +554,24 @@ namespace CppLinq
 			return Any([&](Type a) { return value == a; });
 		}
 
+		// Max
+		template <typename Ret>
+		Type Max(std::function<Ret(Type)> transform) const
+		{
+			return Elect([=](Type a, Type b) { return transform(a) < transform(b) ? b : a; });
+		}
+
+		template <typename Func>
+		Type Max(Func transform) const
+		{
+			return Max<decltype(GetReturnType<Func, Type>())>(transform);
+		}
+
+		Type Max() const
+		{
+			return Max<Type>([](Type a) { return a; });
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
