@@ -572,6 +572,24 @@ namespace CppLinq
 			return Max<Type>([](Type a) { return a; });
 		}
 
+		// Min
+		template <typename Ret>
+		Type Min(std::function<Ret(Type)> transform) const
+		{
+			return Elect([=](Type a, Type b) { return transform(a) < transform(b) ? a : b; });
+		}
+
+		template <typename Func>
+		Type Min(Func transform) const
+		{
+			return Min<decltype(GetReturnType<Func, Type>())>(transform);
+		}
+
+		Type Min() const
+		{
+			return Min<Type>([](Type a) { return a; });
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
