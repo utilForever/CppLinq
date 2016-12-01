@@ -25,6 +25,12 @@
   <ItemGroup>
     <ClCompile Include="..\Sources\AllTest.cpp" />
     <ClCompile Include="..\Sources\AnyTest.cpp" />
+    <ClCompile Include="..\Sources\AverageTest.cpp" />
+    <ClCompile Include="..\Sources\ConcatTest.cpp" />
+    <ClCompile Include="..\Sources\ContainsTest.cpp" />
+    <ClCompile Include="..\Sources\CountTest.cpp" />
+    <ClCompile Include="..\Sources\DistinctTest.cpp" />
+    <ClCompile Include="..\Sources\ElementAtTest.cpp" />
     <ClCompile Include="..\Sources\main.cpp" />
     <ClCompile Include="..\Sources\OrderByTest.cpp" />
     <ClCompile Include="..\Sources\SelectTest.cpp" />
