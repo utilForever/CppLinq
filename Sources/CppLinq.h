@@ -398,12 +398,12 @@ namespace CppLinq
 			{
 				while (true)
 				{
-					Type object = pair.m_first.NextObject();
+					Type object = pair.first.NextObject();
 					Ret key = transform(object);
 
-					if (pair.m_second.find(key) == pair.m_second.end())
+					if (pair.second.find(key) == pair.second.end())
 					{
-						pair.m_second.insert(key);
+						pair.second.insert(key);
 						return object;
 					}
 				}
@@ -506,7 +506,7 @@ namespace CppLinq
 
 		int Count() const
 		{
-			return Count([]() { return true; });
+			return Count([](Type) { return true; });
 		}
 
 		// Any
@@ -687,19 +687,19 @@ namespace CppLinq
 
 			return Enumerator<Type, DataType>([=](DataType& pair) -> Type
 			{
-				if (pair.m_first)
+				if (pair.first)
 				{
-					return pair.m_second.m_first.NextObject();
+					return pair.second.second.NextObject();
 				}
 
 				try
 				{
-					return pair.m_second.m_first.NextObject();
+					return pair.second.first.NextObject();
 				}
 				catch (EnumeratorEndException&)
 				{
-					pair.m_first = true;
-					return pair.m_second.m_second.NextObject();
+					pair.first = true;
+					return pair.second.second.NextObject();
 				}
 			}, std::make_pair(false, std::make_pair(m_enumerator, rhs.m_enumerator)));
 		}
