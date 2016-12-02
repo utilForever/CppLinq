@@ -150,9 +150,9 @@ namespace CppLinq
 		{
 			return Enumerator<Type, std::pair<Enum, int>>([=](std::pair<Enum, int>& pair) -> Type
 			{
-				Type object = pair.m_first.NextObject();
+				Type object = pair.first.NextObject();
 
-				if (!predicate(object, pair.m_second++))
+				if (!predicate(object, pair.second++))
 				{
 					throw EnumeratorEndException();
 				}
@@ -166,17 +166,17 @@ namespace CppLinq
 		{
 			return Enumerator<Type, std::pair<Enum, int>>([=](std::pair<Enum, int>& pair) -> Type
 			{
-				if (pair.m_second != 0)
+				if (pair.second != 0)
 				{
-					return pair.m_first.NextObject();
+					return pair.first.NextObject();
 				}
 
 				Type object;
 
 				do
 				{
-					object = pair.m_first.NextObject();
-				} while (predicate(object, pair.m_second++));
+					object = pair.first.NextObject();
+				} while (predicate(object, pair.second++));
 
 				return object;
 			}, std::make_pair(m_enumerator, 0));
@@ -378,7 +378,7 @@ namespace CppLinq
 		// SkipWhile
 		LinqObject<Enumerator<Type, std::pair<Enum, int>>> SkipWhile(std::function<bool(Type)> predicate) const
 		{
-			return SkipWhileInternal([=](Type t) { return predicate(t); });
+			return SkipWhileInternal([=](Type t, int) { return predicate(t); });
 		}
 
 		// Cast
