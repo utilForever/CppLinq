@@ -31,9 +31,16 @@
     <ClCompile Include="..\Sources\CountTest.cpp" />
     <ClCompile Include="..\Sources\DistinctTest.cpp" />
     <ClCompile Include="..\Sources\ElementAtTest.cpp" />
+    <ClCompile Include="..\Sources\ForeachTest.cpp" />
     <ClCompile Include="..\Sources\main.cpp" />
+    <ClCompile Include="..\Sources\MaxTest.cpp" />
+    <ClCompile Include="..\Sources\MinTest.cpp" />
     <ClCompile Include="..\Sources\OrderByTest.cpp" />
+    <ClCompile Include="..\Sources\ReverseTest.cpp" />
     <ClCompile Include="..\Sources\SelectTest.cpp" />
+    <ClCompile Include="..\Sources\SkipTest.cpp" />
+    <ClCompile Include="..\Sources\SkipWhileTest.cpp" />
+    <ClCompile Include="..\Sources\SumTest.cpp" />
     <ClCompile Include="..\Sources\WhereTest.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
