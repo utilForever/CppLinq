@@ -41,6 +41,12 @@
     <ClCompile Include="..\Sources\SkipTest.cpp" />
     <ClCompile Include="..\Sources\SkipWhileTest.cpp" />
     <ClCompile Include="..\Sources\SumTest.cpp" />
+    <ClCompile Include="..\Sources\TakeTest.cpp" />
+    <ClCompile Include="..\Sources\TakeWhileTest.cpp" />
+    <ClCompile Include="..\Sources\ToDequeTest.cpp" />
+    <ClCompile Include="..\Sources\ToListTest.cpp" />
+    <ClCompile Include="..\Sources\ToSetTest.cpp" />
+    <ClCompile Include="..\Sources\ToVectorTest.cpp" />
     <ClCompile Include="..\Sources\WhereTest.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

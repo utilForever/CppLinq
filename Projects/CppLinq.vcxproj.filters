@@ -5,7 +5,7 @@
       <Filter>CppLinq</Filter>
     </ClInclude>
     <ClInclude Include="..\Sources\TestUtils.h">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +64,24 @@
     <ClCompile Include="..\Sources\SumTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\Sources\TakeTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Sources\TakeWhileTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Sources\ToDequeTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Sources\ToListTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Sources\ToSetTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Sources\ToVectorTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CppLinq">
@@ -71,6 +89,9 @@
     </Filter>
     <Filter Include="Tests">
       <UniqueIdentifier>{4804be8d-6740-4aad-a586-20dfb298dda4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Utils">
+      <UniqueIdentifier>{e5cdd67f-3dd2-48db-ae2d-402545b272d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
