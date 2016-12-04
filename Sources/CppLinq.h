@@ -819,21 +819,21 @@ namespace CppLinq
 	{
 		return Enumerator<Type, std::pair<bool, Type>>([=](std::pair<bool, Type>& pair)
 		{
-			if (!(pair.m_second < end))
+			if (!(pair.second < end))
 			{
 				throw EnumeratorEndException();
 			}
 
-			if (!pair.m_first)
+			if (!pair.first)
 			{
-				pair.m_frist = true;
+				pair.frist = true;
 			}
 			else
 			{
-				pair.m_second += step;
+				pair.second += step;
 			}
 
-			return pair.m_second;
+			return pair.second;
 		}, std::make_pair(false, begin));
 	}
 }
