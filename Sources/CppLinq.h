@@ -224,29 +224,6 @@ namespace CppLinq
 			return result;
 		}
 
-		// Export to container
-		template <typename Container, typename Func>
-		Container ExportToContainer(Func func) const
-		{
-			Container container;
-
-			try
-			{
-				auto en = m_enumerator;
-
-				while (true)
-				{
-					func(container, en.NextObject());
-				}
-			}
-			catch (EnumeratorEndException&)
-			{
-				
-			}
-
-			return container;
-		}
-
 	protected:
 		template <typename Type, typename Ret>
 		class TransformComparer
@@ -704,10 +681,33 @@ namespace CppLinq
 			}, std::make_pair(false, std::make_pair(m_enumerator, rhs.m_enumerator)));
 		}
 
+		// Export to container
+		template <typename Container, typename Func>
+		Container ToContainer(Func func) const
+		{
+			Container container;
+
+			try
+			{
+				auto en = m_enumerator;
+
+				while (true)
+				{
+					func(container, en.NextObject());
+				}
+			}
+			catch (EnumeratorEndException&)
+			{
+
+			}
+
+			return container;
+		}
+
 		// Export methods
 		std::vector<Type> ToVector() const
 		{
-			return ExportToContainer<std::vector<Type>>([](std::vector<Type>& container, const Type& value)
+			return ToContainer<std::vector<Type>>([](std::vector<Type>& container, const Type& value)
 			{
 				container.emplace_back(value);
 			});
@@ -715,7 +715,7 @@ namespace CppLinq
 
 		std::list<Type> ToList() const
 		{
-			return ExportToContainer<std::list<Type>>([](std::list<Type>& container, const Type& value)
+			return ToContainer<std::list<Type>>([](std::list<Type>& container, const Type& value)
 			{
 				container.emplace_back(value);
 			});
@@ -723,7 +723,7 @@ namespace CppLinq
 
 		std::deque<Type> ToDeque() const
 		{
-			return ExportToContainer<std::deque<Type>>([](std::deque<Type>& container, const Type& value)
+			return ToContainer<std::deque<Type>>([](std::deque<Type>& container, const Type& value)
 			{
 				container.emplace_back(value);
 			});
@@ -731,7 +731,7 @@ namespace CppLinq
 
 		std::set<Type> ToSet() const
 		{
-			return ExportToContainer<std::set<Type>>([](std::set<Type>& container, const Type& value)
+			return ToContainer<std::set<Type>>([](std::set<Type>& container, const Type& value)
 			{
 				container.insert(value);
 			});
