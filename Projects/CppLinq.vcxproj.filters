@@ -82,6 +82,9 @@
     <ClCompile Include="..\Sources\ToVectorTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\Sources\LeftJoinTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CppLinq">

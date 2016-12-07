@@ -32,6 +32,7 @@
     <ClCompile Include="..\Sources\DistinctTest.cpp" />
     <ClCompile Include="..\Sources\ElementAtTest.cpp" />
     <ClCompile Include="..\Sources\ForeachTest.cpp" />
+    <ClCompile Include="..\Sources\LeftJoinTest.cpp" />
     <ClCompile Include="..\Sources\main.cpp" />
     <ClCompile Include="..\Sources\MaxTest.cpp" />
     <ClCompile Include="..\Sources\MinTest.cpp" />
