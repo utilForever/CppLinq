@@ -17,8 +17,21 @@ TEST(LeftJoin, People)
 		int m_money;
 	};
 
-	std::vector<People> peoples = { {1, "Tom"}, {2, "Mike"}, {3, "Susan"} };
-	std::vector<Account> accounts = { {2, 10000}, {3, 20000}, {4, 30000} };
+	struct PeopleAccount
+	{
+		int m_no;
+		std::string m_name;
+		int m_money;
+	};
 
-	auto dst = CppLinq::LeftJoin(peoples, accounts, [](People p, Account a) { p.m_no = a.m_no; });
+	People peoples[] = { {1, "Tom"}, {2, "Mike"}, {3, "Susan"} };
+	Account accounts[] = { {2, 10000}, {3, 20000}, {4, 30000} };
+	PeopleAccount ans[] = { { 1, "Tom", NULL }, { 2, "Mike", 10000 }, { 3, "Susan", 20000 } };
+
+	auto rng1 = CppLinq::From(peoples);
+	auto rng2 = CppLinq::From(accounts);
+
+	auto dst = rng1.LeftJoin(rng2, [](People p, Account a) { return p.m_no == a.m_no; });
+
+	IsEqualArray(dst, ans);
 }

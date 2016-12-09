@@ -126,6 +126,23 @@ namespace CppLinq
 			}, std::make_pair(m_enumerator, 0));
 		}
 
+		// LeftJoin Internal
+		template <typename Type1, typename Type2>
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> LeftJoinInternal(std::function<bool(Type1, Type2, int)> predicate) const
+		{
+			return Enumerator<Type, std::pair<Enum, int>>([=](std::pair<Enum, int>& pair) -> Type
+			{
+				Type object;
+
+				do
+				{
+					object = pair.first.NextObject();
+				} while (!predicate(object, pair.second++));
+
+				return object;
+			}, std::make_pair(m_enumerator, 0));
+		}
+
 		// Foreach Internal
 		void ForeachInternal(std::function<void(Type, int)> action) const
 		{
@@ -275,6 +292,13 @@ namespace CppLinq
 		LinqObject<Enumerator<Type, std::pair<Enum, int>>> Where(std::function<bool(Type)> predicate) const
 		{
 			return WhereInternal([=](Type a, int) { return predicate(a); });
+		}
+
+		// LeftJoin
+		template <typename Type2>
+		LinqObject<Enumerator<Type, std::pair<Enum, int>>> LeftJoin(std::function<bool(Type, Type2)> predicate) const
+		{
+			return LeftJoinInternal([=](Type a, Type2 b, int) { return predicate(a, b); });
 		}
 
 		// OrderBy
