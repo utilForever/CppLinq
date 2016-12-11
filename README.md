@@ -1,4 +1,4 @@
-<img src="https://github.com/utilForever/CppLinq/blob/master/CppLinqLogo.png" align="center" width="400" height="400" />
+<img src="https://github.com/utilForever/CppLinq/blob/master/CppLinqLogo.png" align="middle" width="470" height="690" />
 
 # C++ LINQ
 
@@ -6,7 +6,7 @@ LINQ implementation for Modern C++
 
 The main code of this repository is based on [Anton Bukov's boolinq](https://github.com/k06a/boolinq).
 
-[![License](https://img.shields.io/badge/Licence-GNU-blue.svg)](https://github.com/utilForever/CppLinq/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/Licence-MIT-blue.svg)](https://github.com/utilForever/CppLinq/blob/master/LICENSE)
 
 ## Features
 
