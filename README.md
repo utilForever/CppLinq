@@ -1,4 +1,4 @@
-<img src="https://github.com/utilForever/CppLinq/blob/master/CppLinqLogo.png" align="middle" width="470" height="690" />
+<img src="https://github.com/utilForever/CppLinq/blob/master/CppLinqLogo.png" align="right" width="313" height="400" />
 
 # C++ LINQ
 
